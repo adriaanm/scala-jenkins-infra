@@ -9,6 +9,9 @@
 
 # This recipe needs access to the vault, so can't be run on EC2 bootstrap (would be nice to fix)
 
+# EBS
+include_recipe "scala-jenkins-infra::_config-ebs"
+
 # NGINX REVERSE PROXY setup, in concert with JenkinsLocationConfiguration created in master-init
 include_recipe 'scala-jenkins-infra::_master-config-proxy'
 

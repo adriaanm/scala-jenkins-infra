@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: scala-jenkins-infra
-# Recipe:: _worker-config-ebs
+# Recipe:: _config-ebs
 #
 # Copyright 2014, Typesafe, Inc.
 #
