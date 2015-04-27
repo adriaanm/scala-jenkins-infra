@@ -12,6 +12,7 @@ include_recipe "java"
 
 include_recipe "scala-jenkins-infra::_master-init-jenkins"
 
+include_recipe "scala-jenkins-infra::_master-init-artifactory"
 
 case node["platform"]
 when "amazon"
