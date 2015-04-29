@@ -8,8 +8,6 @@
 #
 include_recipe 'chef-client::service'  # TODO: it seems chef's not run on boot on windows?
 
-include_recipe "aws"
-
 include_recipe "git"
 
 include_recipe "chef-sbt" # TODO: remove, redundant with sbt-extras, but the latter won't work on windows

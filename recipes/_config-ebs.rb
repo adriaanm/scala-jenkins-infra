@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "aws"
+
 node['ebs']['volumes'].each do |mountPoint, ebsConfig|
   aws_ebs_volume ebsConfig['dev'] do
     size    ebsConfig['size']
