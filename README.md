@@ -404,6 +404,7 @@ In `knife.rb`, make sure `knife[:aws_ssh_key_id]` points to the pem file.
 
 ## Selected AMIs
 
+jenkins-master: ami-3b14f27f (Amazon Linux AMI 2015.03 on HVM Instance Store 64-bit for US West N. California)
 amazon linux: ami-4b6f650e (Amazon Linux AMI 2014.09.1 x86_64 HVM EBS)
 windows:      ami-cfa5b68a (Windows_Server-2012-R2_RTM-English-64Bit-Base-2014.12.10)
 ubuntu:       ami-81afbcc4 (Ubuntu utopic 14.10 from https://cloud-images.ubuntu.com/locator/ec2/ for us-west-1/amd64/hvm:ebs-ssd/20141204)
@@ -418,11 +419,17 @@ NOTE:
 
 
 ```
-knife ec2 server create -N jenkins-master \
-   --region us-west-1 --flavor t2.small -I ami-4b6f650e \
-   -G Master --ssh-user ec2-user \
-   --iam-profile JenkinsMaster \
-   --identity-file $PWD/.chef/config/chef.pem \
+   --subnet subnet-4bb3b80d --associate-eip 54.67.111.226 \
+   --server-connect-attribute public_ip_address           \
+
+knife ec2 server create -N jenkins-master                  \
+   --flavor m3.large                                       \
+   --region us-west-1                                      \
+   -I ami-3b14f27f                                         \
+   -G Master --ssh-user ec2-user                           \
+   --iam-profile JenkinsMaster                             \
+   --security-group-ids sg-7afd2d1f                        \
+   --identity-file ~/.ssh/typesafe-scala-aws-$AWS_USER.pem \
    --run-list "scala-jenkins-infra::master-init"
 
 knife ec2 server create -N jenkins-worker-windows-publish \
@@ -494,10 +501,10 @@ knife vault update worker-publish gnupg         --search 'name:jenkins-worker-ub
 
 ### Add run-list items that need the vault
 ```
-knife node run_list set jenkins-master    "scala-jenkins-infra::master-init,scala-jenkins-infra::master-config"
+knife node run_list set jenkins-master  "recipe[chef-vault],scala-jenkins-infra::master-init,scala-jenkins-infra::master-config,scala-jenkins-infra::master-jenkins"
 
 for w in jenkins-worker-windows-publish jenkins-worker-ubuntu-publish jenkins-worker-behemoth-1 jenkins-worker-behemoth-2
-  do knife node run_list set $w  "scala-jenkins-infra::worker-init,scala-jenkins-infra::worker-config"
+  do knife node run_list set $w  "recipe[chef-vault],scala-jenkins-infra::worker-init,scala-jenkins-infra::worker-config"
 done
 ```
 
