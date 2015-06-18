@@ -7,11 +7,11 @@ if (node.name =~ /.*-worker-.*/) != nil
   case node["platform_family"]
   when "windows"
     # configure windows-specific recipes (attributes not node-specific!)
-    override['java']['windows']['package_name'] = 'Java(TM) SE Development Kit 6 (64-bit)'
-    override['java']['windows']['url']          = 'https://dl.dropboxusercontent.com/u/12862572/jdk-6u45-windows-x64.exe' # if you change this, must change javacVersion below
-    override['java']['windows']['checksum']     = '345059d5bc64275c1d8fdc03625d69c16d0c8730be1c152247f5f96d00b21b00'
-    override['java']['java_home']               = 'C:\java\jdk-1.6' # must specify java_home on windows (issues with installer on reinstall if it's in program files)
-    default['java']['javacVersion']            = "javac 1.6.0_45"  # we don't install if javac -version returns this string
+    override['java']['windows']['package_name'] = 'Java SE Development Kit 7 Update 79 (64-bit)' # package name in the windows registry / list of installed programs
+    override['java']['windows']['url']          = 'https://dl.dropboxusercontent.com/u/4881107/scala-jenkins-infra/jdk-7u79-windows-x64.exe' # if you change this, must change javacVersion below
+    override['java']['windows']['checksum']     = '80b1452c808691dc63945926c52156c8afe7ebcfa3747093fd296f0a3f1cfbcc'
+    override['java']['java_home']               = 'C:\java\jdk-1.7' # must specify java_home on windows (issues with installer on reinstall if it's in program files)
+    default['java']['javacVersion']             = "javac 1.7.0_79"  # we don't install if javac -version returns this string
 
     override['sbt']['script_name']   = 'sbt.bat'
     override['sbt']['launcher_path'] = 'C:\sbt'
@@ -87,7 +87,6 @@ if (node.name =~ /.*-worker-.*/) != nil
     publisher = (node.name =~ /.*-publish.*/) != nil # TODO: use tag?
     lightWorker = publisher  # TODO: better heuristic...
 
-    override['java']['jdk_version']    = '6'
     override['java']['install_flavor'] = 'oracle' # partest's javap tests fail on openjdk...
     override['java']['oracle']['accept_oracle_download_terms'] = true
     # must specify java_home explicitly, or java_ark thinks it's installed even if some other version is...

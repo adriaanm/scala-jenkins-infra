@@ -57,13 +57,14 @@ node["jenkinsHomes"].each do |jenkinsHome, workerConfig|
     s3Downloads = chef_vault_item("worker-publish", "s3-downloads")
     sonatype    = chef_vault_item("worker-publish", "sonatype")
 
-    { "#{jenkinsHome}/.credentials-private-repo" => "credentials-private-repo.erb",
-      "#{jenkinsHome}/.credentials-sonatype"     => "credentials-sonatype.erb",
-      "#{jenkinsHome}/.credentials"              => "credentials-private-repo.erb",
-      "#{jenkinsHome}/.sonatype-curl"            => "sonatype-curl.erb",
-      "#{jenkinsHome}/.s3credentials"            => "s3credentials.erb",
-      "#{jenkinsHome}/.s3curl"                   => "s3curl.erb",
-      "#{jenkinsHome}/.m2/settings.xml"          => "m2-settings.xml.erb" # TODO: remove pr-scala stuff, use different credentials for private-repo for PR validation and temp release artifacts
+    { "#{jenkinsHome}/.credentials-private-repo"       => "credentials-private-repo.erb",
+      "#{jenkinsHome}/.credentials-private-repo-netrc" => "credentials-private-repo-netrc.erb",
+      "#{jenkinsHome}/.credentials-sonatype"           => "credentials-sonatype.erb",
+      "#{jenkinsHome}/.credentials"                    => "credentials-private-repo.erb",
+      "#{jenkinsHome}/.sonatype-curl"                  => "sonatype-curl.erb",
+      "#{jenkinsHome}/.s3credentials"                  => "s3credentials.erb",
+      "#{jenkinsHome}/.s3curl"                         => "s3curl.erb",
+      "#{jenkinsHome}/.m2/settings.xml"                => "m2-settings.xml.erb" # TODO: remove pr-scala stuff, use different credentials for private-repo for PR validation and temp release artifacts
     }.each do |target, templ|
       template target do
         source    templ
